@@ -1,0 +1,54 @@
+filename,func_name,new_version,old_version,oss_fuzz,vul_id,detail
+ libtiff/tif_lzw.c,,: v3.9.0,v3.9.0beta,,CVE-2008-2327," libtiff/tif_lzw.c: Properly zero out the string
+	table. Fixes CVE-2008-2327 security issue.
+
+	"
+" tools/{rgb2ycbcr.c, tiff2rgba.c",,: v3.9.0,v3.9.0beta,,CVE-2009-2347," tools/{rgb2ycbcr.c, tiff2rgba.c}: Applied patch for
+	CVE-2009-2347 libtiff: integer overflows in various
+	inter-color space conversion tools.  "
+,,: v3.9.0,v3.9.0beta,,,"
+
+"
+,,: v3.9.3,v3.9.2,,CVE-2010-1411," Fixes for CVE-2010-1411.
+
+        "
+,,: v3.9.3,v3.9.2,,CVE-2010-1411," Eliminate FAX3 decoder buffer overrun possibility
+	(CVE-2010-1411).
+
+	"
+,,: v3.9.4,v3.9.3,,CVE-2009-2347," Complete the fixes for CVE-2009-2347.
+
+        "
+,,: v3.9.4,v3.9.3,id=2,CVE-2009-2347," tiff2rgba: Completed fixes for ""CVE-2009-2347 libtiff:
+        integer overflows in various inter-color space conversion
+        tools"". http://bugzilla.maptools.org/show_bug.cgi?id=2079
+
+        "
+" libtiff/tif_jpeg.c, libtiff/tif_strip.c",,: v3.9.5,v3.9.4,id=214,CVE-2010-3087," libtiff/tif_jpeg.c, libtiff/tif_strip.c: apply patch for 
+	CVE-2010-3087 per bug
+	http://bugzilla.maptools.org/show_bug.cgi?id=2140
+
+	"
+ libtiff/tif_color.c,,: v3.9.5,v3.9.4,id=22,CVE-2010-2595," libtiff/tif_color.c: prevent crash in handling bad TIFFs
+	resolves CVE-2010-2595
+	http://bugzilla.maptools.org/show_bug.cgi?id=2208
+
+	"
+,unexpected(),: v3.9.5,v3.9.4,,CVE-2011-0192," libtiff/tif_fax3.h: Protect against a fax VL(n) codeword commanding 
+	a move left.  Without this, a malicious input file can generate an 
+	indefinitely large series of runs without a0 ever reaching the right 
+	margin, thus overrunning our buffer of run lengths.  Per CVE-2011-0192.
+	This is a modified version of a patch proposed by Drew Yao of Apple 
+	Product Security.  It adds an unexpected() report, and disallows the 
+	equality case, since emitting a run without increasing a0 still allows 
+	buffer overrun.
+
+	"
+ libtiff/tif_thunder.c,,: v3.9.5,v3.9.4,id=23,CVE-2011-1167," libtiff/tif_thunder.c: Correct potential buffer overflow with 
+	thunder encoded files with wrong bitspersample set.  The libtiff 
+	development team would like to thank Marin Barbella and TippingPoint's
+	Zero Day Initiative for reporting this vulnerability (ZDI-CAN-1004,
+	CVE-2011-1167).
+	http://bugzilla.maptools.org/show_bug.cgi?id=2300
+
+	"

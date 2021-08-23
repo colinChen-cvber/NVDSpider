@@ -1,0 +1,257 @@
+filename,func_name,new_version,old_version,oss_fuzz,vul_id,,detail
+ tif_jpeg.c,,: v4.0.2,v4.0.1,,CVE-2012-1173,," tif_jpeg.c:  Fix size overflow (zdi-can-1221,CVE-2012-1173).
+
+"
+,,: v4.0.2,v4.0.1,,CVE-2012-2113,," tiff2pdf:  Defend against integer overflows while
+	calculating required buffer sizes (CVE-2012-2113).
+
+"
+,,: v4.0.3,v4.0.2,,CVE-2012-3386,," Updated to use Automake 1.12.4.  Avoids security problem with
+  'make distcheck' (CVE-2012-3386).
+
+"
+,TIFFSetDirectory(),: v4.0.3,v4.0.2,,CVE-2012-3401,," tiff2pdf: Fail when TIFFSetDirectory() fails.  This prevents
+  core dumps or perhaps even arbitrary code execution when processing
+  a corrupt input file (CVE-2012-3401).
+
+  "
+,,: v4.0.4,v4.0.4beta,,CVE-2014-8128,,"Check memory allocations for failure.  Also check
+        multiplication overflow. (Fixes #2501, CVE-2014-8128)
+    "
+ libtiff/tif_dirread.c,TIFFFetchNormalTag(),: v4.0.7,v4.0.6,id=2593,"CVE-2016-9297,CVE-2016-9448",," libtiff/tif_dirread.c: in TIFFFetchNormalTag(), do not
+        dereference NULL pointer when values of tags with
+        TIFF_SETGET_C16_ASCII / TIFF_SETGET_C32_ASCII access are
+        0-byte arrays.  Fixes
+        http://bugzilla.maptools.org/show_bug.cgi?id=2593 (regression
+        introduced by previous fix done on 2016-11-11 for
+        CVE-2016-9297).  Reported by Henri Salo. Assigned as
+        CVE-2016-9448
+
+    "
+ libtiff/tif_strip.c,"TIFFNumberOfStrips(),TIFFNumberOfStrips()",: v4.0.7,v4.0.6,id=2587,CVE-2016-9273,," libtiff/tif_strip.c: make TIFFNumberOfStrips() return the
+        td->td_nstrips value when it is non-zero, instead of
+        recomputing it. This is needed in TIFF_STRIPCHOP mode where
+        td_nstrips is modified. Fixes a read outsize of array in
+        tiffsplit (or other utilities using TIFFNumberOfStrips()).
+        Fixes http://bugzilla.maptools.org/show_bug.cgi?id=2587
+        (CVE-2016-9273)
+
+    "
+ libtiff/tif_dir.c,,: v4.0.7,v4.0.6,id=25,"CVE-2014-8127,CVE-2016-3658",," libtiff/tif_dir.c: discard values of SMinSampleValue and
+        SMaxSampleValue when they have been read and the value of
+        SamplesPerPixel is changed afterwards (like when reading a
+        OJPEG compressed image with a missing SamplesPerPixel tag, and
+        whose photometric is RGB or YCbCr, forcing SamplesPerPixel
+        being 3). Otherwise when rewriting the directory (for example
+        with tiffset, we will expect 3 values whereas the array had
+        been allocated with just one), thus causing a out of bound
+        read access.  Fixes
+        http://bugzilla.maptools.org/show_bug.cgi?id=2500
+        (CVE-2014-8127, duplicate: CVE-2016-3658)
+
+    "
+ libtiff/tif_dirwrite.c,,: v4.0.7,v4.0.6,id=25,"CVE-2014-8127,CVE-2016-3658",," libtiff/tif_dirwrite.c: avoid null pointer dereference on
+        td_stripoffset when writing directory, if FIELD_STRIPOFFSETS
+        was artificially set for a hack case in OJPEG case.  Fixes
+        http://bugzilla.maptools.org/show_bug.cgi?id=2500
+        (CVE-2014-8127, duplicate: CVE-2016-3658)
+
+    "
+ libtiff/tif_predict.c,,: v4.0.7,v4.0.6,,CVE-2016-3622,," libtiff/tif_predict.c (PredictorSetup): Enforce
+        bits-per-sample requirements of floating point predictor (3).
+        Fixes CVE-2016-3622 ""Divide By Zero in the tiff2rgba tool.""
+
+    "
+ libtiff/tif_pixarlog.c,,: v4.0.7,v4.0.6,,CVE-2016-3990,," libtiff/tif_pixarlog.c: Fix write buffer overflow in
+        PixarLogEncode if more input samples are provided than
+        expected by PixarLogSetupEncode.  Idea based on
+        libtiff-CVE-2016-3990.patch from
+        libtiff-4.0.3-25.el7_2.src.rpm by Nikola Forro, but with
+        different and simpler check. (bugzilla #2544)
+
+    "
+ libtiff/tif_pixarlog.c,PixarLogDecode(),: v4.0.7,v4.0.6,,CVE-2016-5875,," libtiff/tif_pixarlog.c: fix potential buffer write overrun in
+        PixarLogDecode() on corrupted/unexpected images (reported by
+        Mathias Svensson) (CVE-2016-5875)
+
+    "
+ libtiff/tif_getimage.c,"TIFFRGBAImageOK(),TIFFRGBAImageBegin()",: v4.0.7,v4.0.6,,"CVE-2015-8665,CVE-2015-8683",," libtiff/tif_getimage.c: fix out-of-bound reads in
+        TIFFRGBAImage interface in case of unsupported values of
+        SamplesPerPixel/ExtraSamples for LogLUV / CIELab. Add explicit
+        call to TIFFRGBAImageOK() in TIFFRGBAImageBegin(). Fix
+        CVE-2015-8665 reported by limingxing and CVE-2015-8683
+        reported by zzf of Alibaba.
+
+    "
+ tools/tiff2pdf.c,,: v4.0.7,v4.0.6,,CVE-2016-5652,," tools/tiff2pdf.c: fix write buffer overflow of 2 bytes on
+        JPEG compressed images. Reported by Tyler Bohan of Cisco Talos
+        as TALOS-CAN-0187 / CVE-2016-5652.  Also prevents writing 2
+        extra uninitialized bytes to the file stream.
+
+    "
+ tools/rgb2ycbcr.c,,: v4.0.7,v4.0.6,,CVE-2016-3623,," tools/rgb2ycbcr.c: validate values of -v and -h parameters to
+        avoid potential divide by zero. Fixes CVE-2016-3623 (bugzilla #2569)
+
+    "
+ tools/tiffcrop.c,loadImage(),: v4.0.7,v4.0.6,,CVE-2016-3991,," tools/tiffcrop.c: Fix out-of-bounds write in loadImage().
+        From patch libtiff-CVE-2016-3991.patch from
+        libtiff-4.0.3-25.el7_2.src.rpm by Nikola Forro (bugzilla
+        #2543)
+
+    "
+ tools/tiff2rgba.c,,: v4.0.7,v4.0.6,,CVE-2016-3945,," tools/tiff2rgba.c: Fix integer overflow in size of allocated
+        buffer, when -b mode is enabled, that could result in
+        out-of-bounds write. Based initially on patch
+        tiff-CVE-2016-3945.patch from libtiff-4.0.3-25.el7_2.src.rpm
+        by Nikola Forro, with correction for invalid tests that
+        rejected valid files. (bugzilla #2545)
+
+    "
+ tools/tiffcrop.c,,: v4.0.7,v4.0.6,,"CVE-2016-5321,CVE-2016-5323",," tools/tiffcrop.c: Avoid access outside of stack allocated
+        array on a tiled separate TIFF with more than 8 samples per
+        pixel.  Reported by Kaixiang Zhang of the Cloud Security Team,
+        Qihoo 360 (CVE-2016-5321 / CVE-2016-5323 , bugzilla #2558 /
+        #2559)
+
+    "
+ libtiff/tif_strip.c,TIFFNumberOfStrips(),: v4.0.8,v4.0.7,id=2587,CVE-2016-9273,," libtiff/tif_strip.c: revert the change in
+        TIFFNumberOfStrips() done for
+        http://bugzilla.maptools.org/show_bug.cgi?id=2587 /
+        CVE-2016-9273 since the above change is a better fix that
+        makes it unnecessary.
+
+    "
+ libtiff/tif_getimage.c,initYCbCrConversion(),: v4.0.8,v4.0.7,id=1663,,," libtiff/tif_getimage.c: initYCbCrConversion(): add basic
+        validation of luma and refBlackWhite coefficients (just check
+        they are not NaN for now), to avoid potential float to int
+        overflows.  Fixes
+        https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=1663
+        Credit to OSS Fuzz
+
+    "
+ libtiff/tif_getimage.c,initYCbCrConversion(),: v4.0.8,v4.0.7,id=1665,,," libtiff/tif_getimage.c: initYCbCrConversion(): check luma[1]
+        is not zero to avoid division by zero.  Fixes
+        https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=1665
+        Credit to OSS Fuzz
+
+    "
+ libtiff/tif_getimage.c,initYCbCrConversion(),: v4.0.8,v4.0.7,id=1665,,," libtiff/tif_getimage.c: initYCbCrConversion(): check luma[1]
+        is not zero to avoid division by zero.  Fixes
+        https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=1665
+        Credit to OSS Fuzz
+
+    "
+ libtiff/tif_getimage.c,initYCbCrConversion(),: v4.0.8,v4.0.7,id=1718,,," libtiff/tif_getimage.c: initYCbCrConversion(): stricter
+        validation for refBlackWhite coefficients values. To avoid
+        invalid float->int32 conversion.  Fixes
+        https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=1718
+        Credit to OSS Fuzz
+
+"
+ libtiff/tif_color.c,"TIFFYCbCrToRGBInit(),TIFFYCbCrtoRGB()",: v4.0.9,v4.0.8,id=1844,,," libtiff/tif_color.c: TIFFYCbCrToRGBInit(): stricter clamping to avoid
+	int32 overflow in TIFFYCbCrtoRGB().
+	Fixes https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=1844
+	Credit to OSS Fuzz
+
+    "
+ libtiff/tif_getimage.c,initYCbCrConversion(),: v4.0.9,v4.0.8,id=19,,," libtiff/tif_getimage.c: initYCbCrConversion(): stricter validation for
+	refBlackWhite coefficients values. To avoid invalid float->int32 conversion
+	(when refBlackWhite[0] == 2147483648.f)
+	Fixes https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=1907
+	Credit to OSS Fuzz
+
+    "
+" libtiff/tif_dirinfo.c, tif_dirread.c","TIFFCheckFieldIsValidForCodec(),TIFFReadDirectory(),TIFFGetField()",: v4.0.9,v4.0.8,"id=258,id=258,id=2693,id=2625,id=2564,id=2561,id=2499,id=2441,id=2433","CVE-2016-10095,CVE-2015-7554,CVE-2016-5318,CVE-2014-8128",," libtiff/tif_dirinfo.c, tif_dirread.c: add _TIFFCheckFieldIsValidForCodec(),
+	and use it in TIFFReadDirectory() so as to ignore fields whose tag is a
+	codec-specified tag but this codec is not enabled. This avoids TIFFGetField()
+	to behave differently depending on whether the codec is enabled or not, and
+	thus can avoid stack based buffer overflows in a number of TIFF utilities
+	such as tiffsplit, tiffcmp, thumbnail, etc.
+	Patch derived from 0063-Handle-properly-CODEC-specific-tags.patch
+	(http://bugzilla.maptools.org/show_bug.cgi?id=2580) by Raphaël Hertzog.
+	Fixes:
+	http://bugzilla.maptools.org/show_bug.cgi?id=2580
+	http://bugzilla.maptools.org/show_bug.cgi?id=2693
+	http://bugzilla.maptools.org/show_bug.cgi?id=2625 (CVE-2016-10095)
+	http://bugzilla.maptools.org/show_bug.cgi?id=2564 (CVE-2015-7554)
+	http://bugzilla.maptools.org/show_bug.cgi?id=2561 (CVE-2016-5318)
+	http://bugzilla.maptools.org/show_bug.cgi?id=2499 (CVE-2014-8128)
+	http://bugzilla.maptools.org/show_bug.cgi?id=2441
+	http://bugzilla.maptools.org/show_bug.cgi?id=2433
+
+    "
+ libtiff/tif_dirread.c,TIFFFetchStripThing(),: v4.0.9,v4.0.8,id=2215,,," libtiff/tif_dirread.c: TIFFFetchStripThing(): limit the number of items
+	read in StripOffsets/StripByteCounts tags to the number of strips to avoid
+	excessive memory allocation.
+	Fixes https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=2215
+	Credit to OSS Fuzz
+    "
+ libtiff/tif_getimage.c,TIFFReadEncodedStripAndAllocBuffer(),: v4.0.9,v4.0.8,"id=27,id=2433",,," libtiff/tif_getimage.c: use _TIFFReadEncodedStripAndAllocBuffer(). 
+	Fixes http://bugzilla.maptools.org/show_bug.cgi?id=2708 and
+	https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=2433 .
+	Credit to OSS Fuzz
+    "
+ libtiff/tif_read.c,"TIFFStartTile(),TIFFStartStrip(),TIFFFileTile()",: v4.0.9,v4.0.8,id=2454,,," libtiff/tif_read.c: TIFFStartTile(): set tif_rawcc to
+	tif_rawdataloaded when it is set. Similarly to TIFFStartStrip().
+	This issue was revealed by the change of 2017-06-30 in TIFFFileTile(),
+	limiting the number of bytes read. But it could probably have been hit
+	too in CHUNKY_STRIP_READ_SUPPORT mode previously ?
+	Fixes https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=2454
+	Credit to OSS Fuzz
+    "
+ libtiff/tif_getimage.c,TIFFReadTileAndAllocBuffer(),: v4.0.9,v4.0.8,id=247,,," libtiff/tif_getimage.c: use _TIFFReadTileAndAllocBuffer().
+	Fixes https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=2470
+	Credit to OSS Fuzz.
+    "
+ libtiff/tif_pixarlog.c,,: v4.0.9,v4.0.8,id=2554,,," libtiff/tif_pixarlog.c: avoid excessive memory allocation on decoding
+	when RowsPerStrip tag is not defined (and thus td_rowsperstrip == UINT_MAX)
+	Fixes https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=2554
+	Credit to OSS Fuzz
+    "
+ libtiff/tif_read.c,TIFFFetchStripThing(),: v4.0.9,v4.0.8,id=235,,," libtiff/tif_read.c: in TIFFFetchStripThing(), only grow the
+	arrays that hold StripOffsets/StripByteCounts, when they are smaller
+	than the expected number of striles, up to 1 million striles, and
+	error out beyond. Can be tweaked by setting the environment variable
+	LIBTIFF_STRILE_ARRAY_MAX_RESIZE_COUNT.
+	This partially goes against a change added on 2002-12-17 to accept
+	those arrays of wrong sizes, but is needed to avoid denial of services.
+	Fixes https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=2350
+	Credit to OSS Fuzz
+    "
+ libtiff/tif_read.c,TIFFFetchStripThing(),: v4.0.9,v4.0.8,id=235,,," libtiff/tif_read.c: in TIFFFetchStripThing(), only grow the
+	arrays that hold StripOffsets/StripByteCounts, when they are smaller
+	than the expected number of striles, up to 1 million striles, and
+	error out beyond. Can be tweaked by setting the environment variable
+	LIBTIFF_STRILE_ARRAY_MAX_RESIZE_COUNT.
+	This partially goes against a change added on 2002-12-17 to accept
+	those arrays of wrong sizes, but is needed to avoid denial of services.
+	Fixes https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=2350
+	Credit to OSS Fuzz
+    "
+ libtiff/tif_getimage.c,,: v4.0.9,v4.0.8,"id=2637,id=2691",,," libtiff/tif_getimage.c: fix fromskew computation when to-be-skipped
+	pixel number is not a multiple of the horizontal subsampling, and
+	also in some other cases. Impact putcontig8bitYCbCr44tile,
+	putcontig8bitYCbCr42tile, putcontig8bitYCbCr41tile,
+	putcontig8bitYCbCr21tile and putcontig8bitYCbCr12tile
+	Fixes http://bugzilla.maptools.org/show_bug.cgi?id=2637 (discovered
+	by Agostino Sarubbo)
+	and https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=2691 (credit
+	to OSS Fuzz)
+   "
+ libtiff/tif_luv.c,"LogLuvInitState(),InitState()",: v4.0.9,v4.0.8,id=27,,," libtiff/tif_luv.c: further reduce memory requirements for temporary
+	buffer when RowsPerStrip >= image_length in LogLuvInitState() and
+	LogL16InitState().
+	Fixes https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=2700
+	Credit to OSS Fuzz
+   "
+ libtiff/tif_getimage.c,initCIELabConversion(),: v4.0.9,v4.0.8,id=3733,,," libtiff/tif_getimage.c: avoid floating point division by zero in
+	initCIELabConversion()
+	Fixes https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=3733
+	Credit to OSS Fuzz
+"
+ tools/tiff2bw.c,,: v4.0.9,v4.0.8,,CVE-2017-16232,," tools/tiff2bw.c (main): Free memory allocated in the tiff2bw
+	program.  This is in response to the report associated with
+	CVE-2017-16232 but does not solve the extremely high memory usage
+	with the associated POC file.
+
+"
